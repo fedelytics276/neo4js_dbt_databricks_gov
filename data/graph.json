@@ -1,1 +1,27 @@
+{
+  "nodes": [
+    { "data": { "id": "RegPolicy", "label": "Regulatory & Policy Layer", "type": "ontology" } },
+    { "data": { "id": "TariffRules", "label": "Tariff Rules", "type": "ontology" } },
+    { "data": { "id": "CoSMethod", "label": "Cost-of-Supply Methodology", "type": "ontology" } },
+    { "data": { "id": "OpsInfra", "label": "Operations & Infrastructure", "type": "ontology" } },
+    { "data": { "id": "Finance", "label": "Finance & Cost Structures", "type": "ontology" } },
+    { "data": { "id": "Opex", "label": "OPEX", "type": "ontology" } },
+    { "data": { "id": "Capex", "label": "CAPEX", "type": "ontology" } },
+    { "data": { "id": "CostAlloc", "label": "Cost Allocations", "type": "ontology" } },
+
+    { "data": { "id": "DS1", "label": "NSH Infrastructure Dataset", "type": "datasource" } },
+    { "data": { "id": "DS3", "label": "StatsSA Census 2022", "type": "datasource" } }
+  ],
+  "edges": [
+    { "data": { "source": "RegPolicy", "target": "TariffRules", "label": "HAS_SUBDOMAIN" } },
+    { "data": { "source": "RegPolicy", "target": "CoSMethod", "label": "HAS_SUBDOMAIN" } },
+    { "data": { "source": "OpsInfra", "target": "Finance", "label": "RELATES_TO" } },
+    { "data": { "source": "Finance", "target": "Opex", "label": "HAS_SUBDOMAIN" } },
+    { "data": { "source": "Finance", "target": "Capex", "label": "HAS_SUBDOMAIN" } },
+    { "data": { "source": "Finance", "target": "CostAlloc", "label": "HAS_SUBDOMAIN" } },
+    { "data": { "source": "TariffRules", "target": "DS1", "label": "USES" } },
+    { "data": { "source": "CostAlloc", "target": "DS1", "label": "USES" } },
+    { "data": { "source": "TariffRules", "target": "DS3", "label": "USES" } }
+  ]
+}
 
