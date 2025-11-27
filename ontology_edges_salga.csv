@@ -1,0 +1,11 @@
+﻿start,end,relationship
+RegPolicy,TariffRules,HAS_SUBDOMAIN
+RegPolicy,CoSMethod,HAS_SUBDOMAIN
+OpsInfra,Finance,RELATES_TO
+Finance,Opex,HAS_SUBDOMAIN
+Finance,Capex,HAS_SUBDOMAIN
+Finance,CostAlloc,HAS_SUBDOMAIN
+Consumption,ConsData,HAS_SUBDOMAIN
+Consumption,SocEcon,HAS_SUBDOMAIN
+Scenario,WhatIf,HAS_SUBDOMAIN
+Scenario,LoadProj,HAS_SUBDOMAIN

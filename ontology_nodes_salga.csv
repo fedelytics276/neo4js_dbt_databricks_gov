@@ -1,0 +1,16 @@
+﻿id,label,type
+RegPolicy,Regulatory & Policy Layer,Layer
+TariffRules,Tariff Rules,Subdomain
+CoSMethod,Cost-of-Supply Methodology,Subdomain
+OpsInfra,Municipal Operations & Infrastructure Layer,Layer
+Finance,Finance & Cost Structures,Layer
+Opex,OPEX,Subdomain
+Capex,CAPEX,Subdomain
+CostAlloc,Cost Allocations,Subdomain
+Consumption,Consumption & Demand Layer,Layer
+ConsData,Consumption Data,Subdomain
+SocEcon,Socio-economic Indicators,Subdomain
+Scenario,Scenario & Simulation Layer,Layer
+WhatIf,What-if Scenarios,Subdomain
+LoadProj,Load Projections,Subdomain
+Docs,Document & Metadata Layer,Layer

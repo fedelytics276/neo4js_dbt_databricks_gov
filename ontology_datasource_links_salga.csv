@@ -1,0 +1,9 @@
+﻿start,end,relationship
+ConsData,StatsSA Census 2022,USES
+Opex,mSCOA Ledger,USES
+Capex,mSCOA Ledger,USES
+CostAlloc,NSH Infrastructure & Service Delivery,USES
+TariffRules,Eskom Megaflex Tariffs,USES
+TariffRules,Water Board Bulk Tariffs,USES
+ConsData,Municipal Billing System (Electricity),USES
+ConsData,Municipal Billing System (Water),USES

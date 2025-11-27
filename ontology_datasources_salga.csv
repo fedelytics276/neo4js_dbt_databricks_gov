@@ -1,0 +1,9 @@
+﻿id,name,category
+DS1,NSH Infrastructure & Service Delivery,External
+DS2,National Treasury Municipal Finance,Internal
+DS3,StatsSA Census 2022,External
+DS4,Eskom Megaflex Tariffs,External
+DS5,Water Board Bulk Tariffs,External
+DS6,mSCOA Ledger,Billing
+DS7,Municipal Billing System (Electricity),Internal
+DS8,Municipal Billing System (Water),Internal
