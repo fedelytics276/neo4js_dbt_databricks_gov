@@ -1,100 +1,70 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>FedeAnalytics — SALGA Ontology Viewer (GitHub Pages Safe)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://unpkg.com/cytoscape@3.23.0/dist/cytoscape.min.js"></script>
-  <script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
-  <script src="https://unpkg.com/cytoscape-dagre@2.5.0/cytoscape-dagre.js"></script>
-
-  <style>
-    html, body { height: 100%; margin: 0; background: #0f1720; font-family: Arial; color:#fff; }
-    header { height: 70px; display:flex; align-items:center; padding:12px 20px; background:#07192c; }
-    #cy { width:100%; height: calc(100% - 70px); }
-    button { margin-left:10px; padding:6px 12px; background:#1f6feb; border:none; color:white; border-radius:6px; cursor:pointer; }
-  </style>
-</head>
-
-<body>
-  <header>
-    <div>
-      <div style="font-size:18px; font-weight:700;">FedeAnalytics — SALGA Ontology Viewer</div>
-      <div style="font-size:12px; opacity:0.8;">GitHub Pages–Optimised Version</div>
-    </div>
-    <button id="fitBtn">Fit</button>
-    <button id="pngBtn">Export PNG</button>
-  </header>
-
-  <div id="cy"></div>
-
 <script>
-/* -------------------------------
-   BASE64-ENCODED GRAPH DATA
-   ------------------------------- */
+const encodedGraph = `PASTE YOUR BASE64 STRING HERE`;
 
-const encodedGraph = `
-eyJub2RlcyI6W3siZGF0YSI6eyJpZCI6Im5vZGVfUmVnUG9saWN5IiwibGFiZWwiOiJSZWd1bGF0b3J5ICYgUG9saWN5IExheWVyIiwib2lkIjoiUmVnUG9saWN5IiwidHlwZSI6IkxheWVyIn0sImNsYXNzZXMiOiJvbnRv
-bG9neSJ9LHsiZGF0YSI6eyJpZCI6Im5vZGVfVGFyaWZmUnVsZXMiLCJsYWJlbCI6IlRhcmlmZiBSdWxlcyIsIm9pZCI6IlRhcmlmZlJ1bGVzIiwidHlwZSI6IlN1YmRvbWFpbiJ9LCJjbGFzc2VzIjoib250b2xvZ3kifSx7
-ImRhdGEiOnsiaWQiOiJub2RlX0NvU01ldGhvZCIsImxhYmVsIjoiQ29zdC1vZi1TdXBwbHkgTWV0aG9kb2xvZ3kiLCJvaWQiOiJDb1NNZXRob2QiLCJ0eXBlIjoiU3ViZG9tYWluIn0sImNsYXNzZXMiOiJvbnRvbG9neSJ9
-LHsiZGF0YSI6eyJpZCI6Im5vZGVfT3BzSW5mcmEiLCJsYWJlbCI6Ik11bmljaXBhbCBPcGVyYXRpb25zICYgSW5mcmFzdHJ1Y3R1cmUgTGF5ZXIiLCJvaWQiOiJPcHNJbmZyYSIsInR5cGUiOiJMYXllciJ9LCJjbGFzc2Vz
-Ijoib250b2xvZ3kifSx7ImRhdGEiOnsiaWQiOiJub2RlX0ZpbmFuY2UiLCJsYWJlbCI6IkZpbmFuY2UgJiBDb3N0IFN0cnVjdHVyZXMiLCJvaWQiOiJGaW5hbmNlIiwidHlwZSI6IkxheWVyIn0sImNsYXNzZXMiOiJvbnRv
-bG9neSJ9LHsiZGF0YSI6eyJpZCI6Im5vZGVfT3BleCIsImxhYmVsIjoiT1B FWCIsIm9pZCI6Ik9wZXgiLCJ0eXBlIjoiU3ViZG9tYWluIn0sImNsYXNzZXMiOiJvbnRvbG9neSJ9LHsiZGF0YSI6eyJpZCI6Im5vZGVfQ2Fw
-ZXgiLCJsYWJlbCI6IkNBUFhYIiwi b2lkIjoiQ2FwZXgiLCJ0eXBlIjoiU3ViZG9tYWluIn0sImNsYXNzZXMiOiJvbnRvbG9neSJ9LHsiZGF0YSI6eyJpZCI6Im5vZGVfQ29zdEFsbG9jIiwibGFiZWwiOiJDb3N0IEFsbG9j
-YXRpb25zIiwib2lkIjoiQ29zdEFsbG9jIiwidHlwZSI6IlN1YmRvbWFpbiJ9LCJjbGFzc2VzIjoib250b2xvZ3kifSx7ImRhdGEiOnsiaWQiOiJkc19EUzMiLCJsYWJlbCI6IlN0YXRzU0EgQ2Vuc3VzIDIwMjIiLCJkc2lk
-IjoiRFMzIiwiY2F0ZWdvcnkiOiJFeHRlcm5hbCJ9LCJjbGFzc2VzIjoiZGF0YXNvdXJjZSJ9LHsiZGF0YSI6eyJpZCI6ImRzX0RTMSIsImxhYmVsIjoiTlNIIEluZnJhc3RydWN0dXJlICYgU2VydmljZSBEZWxpdmVyeSIs
-ImRzaWQiOiJEUzEiLCJjYXRlZ29yeSI6IkV4dGVybmFsIn0sImNsYXNzZXMiOiJkYXRhc291cmNlIn1dLCJlZGdlcyI6W3siZGF0YSI6eyJpZCI6ImUxIiwic291cmNlIjoibm9kZV9SZWdQb2xpY3kiLCJ0YXJnZXQiOiJu
-b2RlX1RhcmlmZlJ1bGVzIiwibGFiZWwiOiJIQVNfU1VCRE9NQUlOIn19LHsiZGF0YSI6eyJpZCI6ImUyIiwic291cmNlIjoibm9kZV9SZWdQb2xpY3kiLCJ0YXJnZXQiOiJub2RlX0NvU01ldGhvZCIsImxhYmVsIjoiSEFT
-X1NVQkRPTUFJTiJ9fSx7ImRhdGEiOnsiaWQiOiJlMyIsInNvdXJjZSI6Im5vZGVfT3BzSW5mcmEiLCJ0YXJnZXQiOiJub2RlX0ZpbmFuY2UiLCJsYWJlbCI6IlJFTEFURVNfVE8ifX0seyJkYXRhIjp7ImlkIjoiZTQiLCJz
-b3VyY2UiOiJub2RlX0ZpbmFuY2UiLCJ0YXJnZXQiOiJub2RlX09wZXgiLCJsYWJlbCI6IkhBU19TVUJET01BSU4ifX0seyJkYXRhIjp7ImlkIjoiZTUiLCJzb3VyY2UiOiJub2RlX0ZpbmFuY2UiLCJ0YXJnZXQiOiJub2Rl
-X0NhcGV4IiwibGFiZWwiOiJIQVNfU1VCRE9NQUlOIn19LHsiZGF0YSI6eyJpZCI6ImU2Iiwic291cmNlIjoibm9kZV9GaW5hbmNlIiwidGFyZ2V0Ijoibm9kZV9Db3N0QWxsb2MiLCJsYWJlbCI6IkhBU19TVUJET01BSU4i
-fX0seyJkYXRhIjp7ImlkIjoiZTciLCJzb3VyY2UiOiJub2RlX1RhcmlmZlJ1bGVzIiwidGFyZ2V0IjoiZHNfRFMyIiwibGFiZWwiOiJVU0VTI
-n19LHsiZGF0YSI6eyJpZCI6ImU4Iiwic291cmNlIjoibm9kZV9Db3N0QWxsb2MiLCJ0YXJnZXQiOiJkc19EUzEiLCJsYWJlbCI6IlVTRVMifX1dfQ==`;
-
-/* Decode Base64 safely */
 const graph = JSON.parse(atob(encodedGraph));
 
-/* Setup Cytoscape */
-cytoscape.use(cytoscapeDagre);
-
-const cy = cytoscape({
-    container: document.getElementById('cy'),
-    elements: graph,
-    layout: { name:'dagre', rankDir:'TB', nodeSep:50, rankSep:70 },
-    style: [
-      { selector:'node.ontology',
-        style:{
-          'background-color':'#2c6cf4',
-          'label':'data(label)',
-          'color':'white',
-          'text-outline-color':'#0b1b2b',
-          'text-outline-width':3
-      }},
-      { selector:'node.datasource',
-        style:{
-          'background-color':'#00a88b',
-          'shape':'round-rectangle',
-          'label':'data(label)',
-          'color':'#012d26'
-      }},
-      { selector:'edge',
-        style:{
-          'line-color':'#aaa',
-          'target-arrow-color':'#aaa',
-          'target-arrow-shape':'triangle',
-          'label':'data(label)',
-          'font-size':10
-      }}
-    ]
+// 🔥 FIX: Inject CSS classes automatically
+graph.nodes = graph.nodes.map(n => {
+  if (n.data && n.data.type) {
+    if (n.data.type === "Layer" || n.data.type === "Subdomain") {
+      n.classes = "ontology";
+    }
+    if (n.data.category === "External") {
+      n.classes = "datasource";
+    }
+  }
+  return n;
 });
 
-/* Buttons */
+cytoscape.use(cytoscapeDagre);
+
+// Init graph
+const cy = cytoscape({
+  container: document.getElementById('cy'),
+  elements: graph,
+  layout: { name:'dagre', rankDir:'TB' },
+  style: [
+    {
+      selector:'node.ontology',
+      style:{
+        'background-color':'#2c6cf4',
+        'label':'data(label)',
+        'color':'white',
+        'text-outline-color':'#0b1b2b',
+        'text-outline-width':3,
+        'font-size':10,
+        'width':40,
+        'height':40
+      }
+    },
+    {
+      selector:'node.datasource',
+      style:{
+        'background-color':'#00a88b',
+        'label':'data(label)',
+        'shape':'round-rectangle',
+        'font-size':9,
+        'color':'#012d26'
+      }
+    },
+    {
+      selector:'edge',
+      style:{
+        'line-color':'#aaa',
+        'target-arrow-color':'#aaa',
+        'target-arrow-shape':'triangle',
+        'label':'data(label)',
+        'font-size':9
+      }
+    }
+  ]
+});
+
+// Buttons
 document.getElementById('fitBtn').onclick = () => cy.fit();
 document.getElementById('pngBtn').onclick = () => {
-  const png = cy.png({full:true, scale:2});
+  const png = cy.png({full:true,scale:2});
   const a = document.createElement('a');
   a.href = png; a.download = "ontology.png"; a.click();
 };
 </script>
-</body>
-</html>
